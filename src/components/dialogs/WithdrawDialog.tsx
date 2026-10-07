@@ -30,7 +30,7 @@ import { myDisInvestProofGood } from '@/services/graphql/account';
 import { prettifyCurrencys, powerIterative, prettifyCurrencysFee, getDecimalPlaces, withoutRounding } from '@/services/graphql/util';
 
 import { useLocalStorage } from "@/utils/LocalStorageManager";
-import { useErrorMess } from '@/hooks/useErrorMess';
+import { useErrorMess as formatErrorMessage } from '@/hooks/useErrorMess';
 import { GRK_SIZES } from "@/types/common";
 import CreatModal from "./creatModal";
 
@@ -189,6 +189,7 @@ export function WithdrawDialog({
     // @ts-ignore
     const qunt = Number(goodQ * powerIterative(10, disgood.good1.decimals)).toFixed(0);
     console.log("dis---", qunt, goodQ)
+    try {
     const isSuccess = await disinvest(disgood.id, BigInt(qunt));
     if (isSuccess === true) {
       messageApi.open({
@@ -205,10 +206,11 @@ export function WithdrawDialog({
     } else {
       messageApi.open({
         type: 'error',
-        content: useErrorMess(isSuccess, t),
+        content: formatErrorMessage(isSuccess, t),
       });
     }
     setSpinning(false);
+    } catch { messageApi.open({type:"error",content:t("common.mess.error")}); } finally { setSpinning(false); }
     document.body.style.overflow = "";
   };
 

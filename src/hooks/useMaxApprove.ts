@@ -6,6 +6,6 @@ interface MaxApprove {
 }
 
 export const useMaxApprove = create<MaxApprove>((set) => ({
-    maxApprove: true,
+    maxApprove: false,
     setMaxApprove: (loading) => set({ maxApprove: loading }),
 }));

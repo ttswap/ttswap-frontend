@@ -55,7 +55,7 @@ export default (i18n: any) => [
   {
     path: '/TokensSeting',
     element: createElement(TokensSeting),
-    title:i18n.t('header.menu.publicSale')
+    title:i18n.t('appUx.configTitle')
   },
 ];
 

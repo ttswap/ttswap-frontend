@@ -1,3 +1,4 @@
+import "@/styles/trade.css";
 import {
     Tabs,
     TabsList,
@@ -45,12 +46,14 @@ export default function Trade({ params }: TradingPageProps) {
     const [selectToken, setSelectToken] = useState(null);
 
     useEffect(() => {
-        setActiveTab(params?.defaultTab);
+        setActiveTab(params?.defaultTab || "swap");
         useInvestStore.setState({ invest: initDefaultinvest() });
         useSwapStore.setState({ swaps: initDefaultSwap() });
     }, []);
 
     useEffect(() => {
+        let cancelled = false;
+        setToken(undefined);
         if (info.id) {
             (async () => {
                 let sel = "";
@@ -65,10 +68,11 @@ export default function Trade({ params }: TradingPageProps) {
                     par: Timestamp()
                 }, ssionChian);
                 console.log(tokens, goodId, 99998888)
-                setToken(tokens);
-            })();
+                if (!cancelled) setToken(tokens);
+            })().catch(() => { if (!cancelled) setToken(undefined); });
         }
-    }, [info, goodId, ssionChian]);
+        return () => { cancelled = true; };
+    }, [info.id, goodId.swap.id, ssionChian]);
 
     // 选择代币
     const handleTokenSelect = (token: SwapTokenValue) => {
@@ -83,14 +87,14 @@ export default function Trade({ params }: TradingPageProps) {
     };
 
     return (
-        <div className="">
+        <div className="trade-widget">
             <div>
                 <Tabs
                     value={activeTab}
                     onValueChange={setActiveTab}
                     className="w-full"
                 >
-                    <TabsList className="grid w-full grid-cols-2 mb-6">
+                    <TabsList className="trade-tabs">
                         <TabsTrigger value="swap">{t("common.swap")}</TabsTrigger>
                         <TabsTrigger value="invest">{t("common.invest")}</TabsTrigger>
                     </TabsList>

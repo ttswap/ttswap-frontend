@@ -1,3 +1,4 @@
+import { assertQuoteLiquidity, assertQuoteStep } from "@/utils/tradeSafety";
 import { useSwapStore } from "@/stores/swap";
 import { useSwapAmountStore } from "@/stores/swapAmount";
 import { SwapKeys } from "@/types/common";
@@ -106,6 +107,12 @@ const useSwap = () => {
     };
 
     const cionNum = (value: number, data: any, type: number) => {
+        if (!Number.isFinite(Number(value)) || Number(value) <= 0) return 0;
+        assertQuoteLiquidity(data);
+        let steps = 0;
+        const guardStep = (step: number, remaining: number) => {
+            assertQuoteStep(step, remaining, ++steps);
+        };
         if (type === 0) {
             // let fa = value * 10 ** swaps.from.decimals;
             // fa = fa - fa * swaps.from.sellFee;
@@ -124,6 +131,7 @@ const useSwap = () => {
 
                 while (remainingAmount > 0) {
                     const stepSize = Math.min(remainingAmount, fromQuantity / 100);
+                    guardStep(stepSize, remainingAmount);
 
                     totalValue += Math.trunc((2 * stepSize * Number(data.fromValue)) / (2 * fromQuantity + stepSize));
 
@@ -144,6 +152,7 @@ const useSwap = () => {
                 while (remainingValue > 0) {
 
                     const stepSize = Math.min(remainingValue, toValue / 100);
+                    guardStep(stepSize, remainingValue);
                     console.log("---ss--", stepSize, remainingValue);
                     if (stepSize > 0) {
                         st1 = (2 * stepSize * toQuantity) / (2 * toValue + stepSize);
@@ -177,6 +186,7 @@ const useSwap = () => {
 
                 while (remainingAmount > 0) {
                     const stepSize = Math.min(remainingAmount, fromQuantity / 100);
+                    guardStep(stepSize, remainingAmount);
 
                     totalValue += Math.trunc((2 * stepSize * Number(data.toValue)) / (2 * fromQuantity + stepSize));
 
@@ -197,6 +207,7 @@ const useSwap = () => {
                 while (remainingValue > 0) {
 
                     const stepSize = Math.min(remainingValue, toValue / 100);
+                    guardStep(stepSize, remainingValue);
                     console.log("---ss--", stepSize, remainingValue);
                     if (stepSize > 0) {
                         st1 = (2 * stepSize * toQuantity) / (2 * toValue + stepSize);
@@ -247,12 +258,13 @@ const useSwap = () => {
         // const ta = (Number(data.toQuan)/(Number(data.toValue)+rv))*rv;
         // let tnum = (ta-ta*swaps.to.sellFee)/10**swaps.to.decimals;
         // tnum = Number(tnum.toFixed(6));
-        if (value === 0) {
+        if (!value || Number(value) <= 0 || !data) {
+            const input: any = value || "";
             setSwapAmount({
                 from: {
                     token: swaps.from.symbol,
                     // @ts-ignore
-                    amount: 0,
+                    amount: element === SwapKeys.From ? input : "",
                     id: swaps.from.id,
                     currentQuantity: 0,
                     currentValue: 0,
@@ -261,7 +273,7 @@ const useSwap = () => {
                 to: {
                     token: swaps.to.symbol,
                     // @ts-ignore
-                    amount: 0,
+                    amount: element === SwapKeys.From ? "" : input,
                     id: swaps.to.id,
                     currentQuantity: 0,
                     currentValue: 0,

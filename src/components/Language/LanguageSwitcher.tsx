@@ -1,9 +1,11 @@
+import { useTranslation } from "react-i18next";
 import { useLanguage } from '@/hooks/useLanguage';
 import { Dropdown, Button } from "antd";
 import type { MenuProps } from "antd";
 import { GlobalOutlined } from '@ant-design/icons';
 
 export function LanguageSwitcher() {
+  const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
 
   const change = (e) => {
@@ -23,8 +25,8 @@ export function LanguageSwitcher() {
   ];
   return (
     <div>
-      <Dropdown menu={{ items }} trigger={['click']}>
-        <Button shape="circle" size="large" icon={<GlobalOutlined />} />
+      <Dropdown menu={{ items, onClick: ({key}) => change(key), selectedKeys: [currentLanguage] }} trigger={['click']}>
+        <Button aria-label={t("appUx.language")} shape="circle" size="large" icon={<GlobalOutlined />} />
       </Dropdown>
     </div>
   );

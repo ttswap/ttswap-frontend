@@ -1,3 +1,4 @@
+import { PageState } from "@/components/common/PageState";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,6 +48,7 @@ export function InvestmentTable({
   const { info } = useValueGood();
   const { ssionChian } = useLocalStorage();
   const page_size = 20;
+  const [retryVersion,setRetryVersion] = useState(0);
 
 
   const handlePagination = (page_number: number) => {
@@ -66,48 +68,19 @@ export function InvestmentTable({
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [hasMore, pagination]);
+
   // console.log("pafas:", pagination,hasMore)
+  useEffect(() => {setPagination({page_number:1});setResult([]);setHasMore(false);setError({error:false,error_message:""});},[ssionChian, info.id, wallet_address]);
   useEffect(() => {
-    (async () => {
-      if (!info.id || !wallet_address) {
-        setResult([]);
-        return;
-      }
-      setSpinning(true);
-      // setResult(None);
-      let response: any;
-      try {
-        response =
-          await myInvestGoodsDatas({
-            id: info.id,
-            pageNumber: pagination.page_number - 1,
-            pageSize: page_size,
-            address: wallet_address,
-          }, ssionChian);
-        console.log(response, "***");
-        setHasMore(response.pagination.has_more);
-        setError({ error: false, error_message: "" });
-        if (pagination.page_number === 1) {
-          setResult(response.items);
-        } else {
-          setResult(prevItems => [...prevItems, ...response.items]);
-        }
-      } catch (exception) {
-        setResult(null);
-        setError({
-          error: response ? response.error : false,
-          error_message: response ? response.error_message : "",
-        });
-      }
-      setSpinning(false);
-    })();
-  }, [ssionChian, pagination, info.id, wallet_address]);
+    let active=true;
+    if (!info.id || !wallet_address) { setSpinning(true); return; }
+    setSpinning(true);setError({error:false,error_message:""});
+    (async()=>{try{const response:any=await myInvestGoodsDatas({id: info.id, address: wallet_address,pageNumber:pagination.page_number-1,pageSize:page_size},ssionChian);if(!active)return;
+      setHasMore(response.pagination.has_more);
+      setResult(prev=>pagination.page_number===1 ? response.items || [] : [...(prev || []),...(response.items || [])]);
+    }catch{if(active)setError({error:true,error_message:""});}finally{if(active)setSpinning(false);}})();
+    return()=>{active=false;};
+  },[ssionChian, info.id, wallet_address,pagination.page_number,retryVersion]);
 
 
   const getReturnColor = (returnPercent: number) => {
@@ -159,6 +132,8 @@ export function InvestmentTable({
     }
   };
 
+  if (error.error) return <PageState kind="error" onRetry={()=>setRetryVersion(v=>v+1)}/>;
+  if (spinning && !maybeResult?.length) return <PageState kind="loading"/>;
   return (
     <div>
       {/* 桌面端表格 */}
@@ -452,6 +427,7 @@ export function InvestmentTable({
           </div>
         </div>
       )}
+      {hasMore && <div className="app-load-more"><button className="app-secondary" disabled={spinning} onClick={()=>setPagination(p=>({page_number:p.page_number+1}))}>{t("appUx.loadMore")}</button></div>}
     </div>
   );
 }

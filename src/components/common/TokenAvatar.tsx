@@ -55,7 +55,7 @@ export const TokenAvatar: React.FC<TokenAvatarProps> = ({
                     data = svgCache.get(token_url);
                 } else {
                     const response = await fetch(
-                        token_url ??
+                        token_url ||
                         "/token.svg"
                     );
                     data = await response.text();
@@ -94,13 +94,12 @@ export const TokenAvatar: React.FC<TokenAvatarProps> = ({
     ) : (
         <>
             <img
-                src={token_url ?? "/token.svg"}
+                src={token_url || "/token.svg"}
                 alt="Token Image"
                 style={{ background: "#fff" }}
                 className={`h-full w-full rounded-[100%]`}
                 onError={(e) => {
-                    e.currentTarget.src =
-                        "/token.svg";
+                    if (e.currentTarget.getAttribute("src") !== "/token.svg") e.currentTarget.src = "/token.svg";
                 }}
             />
             {sub_url && (
@@ -113,8 +112,7 @@ export const TokenAvatar: React.FC<TokenAvatarProps> = ({
                     }}
                     className={`${SUB_SIZE} absolute -bottom-2 -left-3 rounded-[100%]`}
                     onError={(e) => {
-                        e.currentTarget.src =
-                            "/token.svg";
+                        if (e.currentTarget.getAttribute("src") !== "/token.svg") e.currentTarget.src = "/token.svg";
                     }}
                 />
             )}

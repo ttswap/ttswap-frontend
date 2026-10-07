@@ -22,7 +22,7 @@ import { LoadingOutlined, DownOutlined } from '@ant-design/icons';
 // import type { MenuProps } from 'antd';
 import useWallet from "@/hooks/useWallet";
 import { useMaxApprove } from '@/hooks/useMaxApprove';
-import { useErrorMess } from '@/hooks/useErrorMess';
+import { useErrorMess as formatErrorMessage } from '@/hooks/useErrorMess';
 // import { GoodsDatas } from '@/services/graphql';
 import { minThreshold, createTokenV } from '@/services/graphql/account';
 import { getSWETH } from '@/data/contractConfig';
@@ -114,12 +114,13 @@ export function CreateTokenDialog({
 
   const newGood = async () => {
     setSpinning(true);
+    try {
     // @ts-ignore
     // const config = inF * 2 ** 217 + disinF * 2 ** 211 + buyF * 2 ** 204 + sellF * 2 ** 197 + swapS * 2 ** 187 + disinS * 2 ** 177
 
     // stakeAmountFrom,stakeAmountTo,goodC,ercType(1),ercId(0),maxApprove
     const isSuccess = await newGoods(Number(stakeAmountFrom), Number(stakeAmountTo)*selectVgood.goodValue, goodC, 1, 0, maxApprove);
-    console.log("isSuccess:--", isSuccess, useErrorMess(isSuccess, t))
+    console.log("isSuccess:--", isSuccess, formatErrorMessage(isSuccess, t))
     if (isSuccess === true) {
       messageApi.open({
         type: 'success',
@@ -140,13 +141,14 @@ export function CreateTokenDialog({
       }
       messageApi.open({
         type: 'error',
-        content: useErrorMess(isSuccess, t) + yz,
+        content: formatErrorMessage(isSuccess, t) + yz,
       });
     }
     // }).catch((error) => {
     //   console.error(`"Failed to switch chains: " ${error}`);
     // });
     setSpinning(false);
+    } catch { messageApi.open({type:"error",content:t("common.mess.error")}); } finally { setSpinning(false); }
     document.body.style.overflow = "";
   };
 

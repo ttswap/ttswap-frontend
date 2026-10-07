@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 
+import { getChainName } from "@/data/networks";
 import { DownOutlined } from "@ant-design/icons";
 // import { useWeb3React } from "@web3-react/core";
 import { Dropdown, Button } from "antd";
@@ -94,7 +95,7 @@ const ChainSelector: FC = () => {
     setChainId(ssionChian);
     console.log(Number(chid), "account", ssionChian);
     // })();
-  }, []);
+  }, [ssionChian]);
 
   useEffect(() => {
 
@@ -160,10 +161,10 @@ const ChainSelector: FC = () => {
       `}
       </style>
       <Dropdown menu={{ items: itemsWithSelectedClass, onClick, }} trigger={['click']} overlayClassName="custom-chain-dropdown">
-        <Button style={{ ...styles.button, ...styles.item }}>
+        <Button className="app-network-selector" aria-label={(ssionChian === 560048 ? "Hoodi Testnet" : getChainName(ssionChian))} style={{ ...styles.button, ...styles.item }}>
           {!selected && <span style={{ marginLeft: "5px" }}>Select Chain</span>}
           {selected ? (
-            <div style={{ display: "flex", alignItems: "center", minWidth: "25px" }}>
+            <div className="app-chain-icon" style={{ display: "flex", alignItems: "center", minWidth: "25px" }}>
               <span style={{ paddingTop: "5px" }}>{label}</span>
             </div>
           ) : (
@@ -177,7 +178,7 @@ const ChainSelector: FC = () => {
               )}
             </>
           )}
-          <DownOutlined />
+          <span className="app-chain-name">{(ssionChian === 560048 ? "Hoodi Testnet" : getChainName(ssionChian))}</span><DownOutlined />
         </Button>
       </Dropdown>
     </div>

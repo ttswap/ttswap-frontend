@@ -1,3 +1,4 @@
+import { PageState } from "@/components/common/PageState";
 import { useEffect, useRef, useState } from "react";
 import {
   Table,
@@ -46,6 +47,7 @@ export function TransactionRecords({
   const { info } = useValueGood();
   const { ssionChian } = useLocalStorage();
   const page_size = 20;
+  const [retryVersion,setRetryVersion] = useState(0);
 
 
   const handlePagination = (page_number: number) => {
@@ -65,76 +67,20 @@ export function TransactionRecords({
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [hasMore, pagination]);
+
   // console.log("pafas:", pagination,hasMore)
 
+  useEffect(() => {setPagination({page_number:1});setRecords([]);setHasMore(false);setError({error:false,error_message:""});},[ssionChian, info.id, wallet_address, tokenId]);
   useEffect(() => {
-    (async () => {
-      setSpinning(true);
-      // setResult(None);
-      let response: any;
-      try {
-        response =
-          await goodsTransactionsDatas({
-            id: info.id,
-            address: tokenId,
-            walletAddress: wallet_address,
-            pageNumber: pagination.page_number - 1,
-            pageSize: page_size,
-          }, ssionChian);
-        console.log("goodsTransactionsDatas",response, "***");
-        setHasMore(response.pagination.has_more);
-        setError({ error: false, error_message: "" });
-        setRecords(response.items || []);
-      } catch (exception) {
-        setRecords([]);
-        setError({
-          error: response ? response.error : false,
-          error_message: response ? response.error_message : "",
-        });
-      }
-      setSpinning(false);
-    })();
-  }, [ssionChian, info, tokenId, wallet_address]);
-
-  useEffect(() => {
-    if (pagination.page_number === 1) return;
-    (async () => {
-      setSpinning(true);
-      // setResult(None);
-      let response: any;
-      try {
-        response =
-          await goodsTransactionsDatas({
-            id: info.id,
-            address: tokenId,
-            walletAddress: wallet_address,
-            pageNumber: pagination.page_number - 1,
-            pageSize: page_size,
-          }, ssionChian);
-        console.log(response, "***");
-        setHasMore(response.pagination.has_more);
-        setError({ error: false, error_message: "" });
-        if (pagination.page_number === 1) {
-          setRecords(response.items || []);
-        } else {
-          setRecords(prevItems => [...(prevItems || []), ...(response.items || [])]);
-        }
-      } catch (exception) {
-        setRecords([]);
-        setError({
-          error: response ? response.error : false,
-          error_message: response ? response.error_message : "",
-        });
-      }
-      setSpinning(false);
-    })();
-  }, [pagination]);
+    let active=true;
+    if (!info.id) { setSpinning(true); return; }
+    setSpinning(true);setError({error:false,error_message:""});
+    (async()=>{try{const response:any=await goodsTransactionsDatas({id: info.id, address: tokenId, walletAddress: wallet_address,pageNumber:pagination.page_number-1,pageSize:page_size},ssionChian);if(!active)return;
+      setHasMore(response.pagination.has_more);
+      setRecords(prev=>pagination.page_number===1 ? response.items || [] : [...(prev || []),...(response.items || [])]);
+    }catch{if(active)setError({error:true,error_message:""});}finally{if(active)setSpinning(false);}})();
+    return()=>{active=false;};
+  },[ssionChian, info.id, wallet_address, tokenId,pagination.page_number,retryVersion]);
   // 交易类型标签
   const TRANSACTION_TYPE_LABELS: Record<string, string> = {
     buy: t("table.transactions.buy"),
@@ -239,6 +185,8 @@ export function TransactionRecords({
     }
   };
 
+  if (error.error) return <PageState kind="error" onRetry={()=>setRetryVersion(v=>v+1)}/>;
+  if (spinning && !records?.length) return <PageState kind="loading"/>;
   return (
     <div className="animate-fade-in">
       {/* 桌面端表格 */}
@@ -316,7 +264,8 @@ export function TransactionRecords({
                 </TableCell>
                 <TableCell className="text-center px-2 py-[5.5px]">
                   <Button
-                    onClick={() => window.open(`${record.hash}`, '_blank')}
+                    aria-label={t("appUx.viewTransaction")}
+                    onClick={() => window.open(`${record.hash}`, '_blank', 'noopener,noreferrer')}
                     size="sm"
                     className="h-7 px-2 text-xs bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 shadow-sm transition-colors"
                   >
@@ -360,7 +309,8 @@ export function TransactionRecords({
                 </div>
               </div>
               <Button
-                onClick={() => window.open(`${record.hash}`, '_blank')}
+                aria-label={t("appUx.viewTransaction")}
+                    onClick={() => window.open(`${record.hash}`, '_blank', 'noopener,noreferrer')}
                 size="sm"
                 className="h-7 px-2 text-xs bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 shadow-sm btn-modern hover-glow transition-all duration-200 ml-2"
               >
@@ -411,6 +361,7 @@ export function TransactionRecords({
           {t("common.noData")}
         </div>
       )}
+      {hasMore && <div className="app-load-more"><button className="app-secondary" disabled={spinning} onClick={()=>setPagination(p=>({page_number:p.page_number+1}))}>{t("appUx.loadMore")}</button></div>}
     </div>
   );
 }

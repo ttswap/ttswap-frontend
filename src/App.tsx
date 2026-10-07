@@ -1,9 +1,11 @@
+import { Link, useLocation } from "react-router-dom";
 
 import { useEffect, useState, useMemo, Suspense } from "react";
 import { Flex } from "@radix-ui/themes"
 import "@radix-ui/themes/styles.css"
 import RouterView from './routes'
 import { Locale, RainbowKitProvider, lightTheme, AvatarComponent } from '@rainbow-me/rainbowkit';
+import { PageState } from "@/components/common/PageState";
 import { SiteHeader } from "@/components/header/site-header"
 import Jazzicons from "@/components/Jazzicons";
 import { Loading, GlobalLoading } from '@/components/Loading';
@@ -16,6 +18,7 @@ import { ethers } from "ethers";
 import { useLanguage } from '@/hooks/useLanguage';
 
 import "@/styles/widget.css";
+import "@/styles/app.css";
 // import "@radix-ui/themes/styles.css"
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -32,6 +35,9 @@ const getString = (str: string): string | null => {
   return str.substring(index + 1); // 返回"?"之后的所有字符
 }
 function App() {
+  const [networkState, setNetworkState] = useState("loading");
+  const [networkRetry,setNetworkRetry] = useState(0);
+  const isTradePage = useLocation().pathname === "/trade";
   const { isConnected } = useAccount();
   const chainId = useChainId();
   const [language, setLanguage] = useState('en');
@@ -66,8 +72,14 @@ function App() {
   }, [isConnected, chainId, ssionChian]);
 
   useEffect(() => {
+    let active = true;
+    setNetworkState("loading");
+    setValueGood({id:"",name:"",symbol:"",address:"",decimals:0,logo_url:""});
     (async () => {
+      try {
       const bal = await valueGood(ssionChian);
+      if (!active) return;
+      if (!bal?.data?.goodStates?.[0]) throw new Error("Network data unavailable");
       console.log(bal, 99999999999, ssionChian)
       setValueGood({
         id: bal.data.goodStates[0].id,
@@ -77,8 +89,11 @@ function App() {
         address: bal.data.goodStates[0].erc20Address,
         decimals: bal.data.goodStates[0].tokendecimals
       });
+      setNetworkState("ready");
+      } catch { if(active)setNetworkState("error"); }
     })();
-  }, [ssionChian]);
+    return () => { active = false; };
+  }, [ssionChian,networkRetry]);
 
   useEffect(() => {
     // i18n.loadLanguages(i18n.language);
@@ -109,7 +124,7 @@ function App() {
         locale={language as Locale}
         initialChain={ssionChian}
         theme={lightTheme({
-          accentColor: 'rgb(134 211 139)',
+          accentColor: '#047857',
           accentColorForeground: 'white',
           borderRadius: 'medium',
           // fontStack: 'system',
@@ -120,17 +135,18 @@ function App() {
       >
         {/* <Loading /> */}
         <GlobalLoading />
-        <div className="relative flex min-h-screen flex-col bg-gray-50/30">
+        <div className={`app-shell ${isTradePage ? "trade-route" : ""}`}>
           <SiteHeader />
           <div className="flex-1">
             <Flex
               direction="column"
               gap="5"
-              className="container min-h-[calc(100vh-150px)] py-16 px-4 sm:px-6"
+              className={isTradePage ? "trade-main-container" : "app-main-container"}
             >
-              <RouterView />
+              {networkState === "error" ? <PageState kind="error" onRetry={()=>setNetworkRetry(n=>n+1)}/> : <RouterView />}
             </Flex>
           </div>
+          <footer className="app-footer"><Link to="/">TTSwap</Link><nav aria-label={i18n.t("appUx.resources")}><a href="https://docs.ttswap.io" target="_blank" rel="noopener noreferrer">{i18n.t("footer.title2")}</a><a href="https://github.com/ttswap" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://x.com/ttswapFinance" target="_blank" rel="noopener noreferrer">X</a><a href="https://discord.gg/XygqnmQgX3" target="_blank" rel="noopener noreferrer">Discord</a><a href="mailto:ttswapfinance@gmail.com">{i18n.t("appUx.contact")}</a><a href="https://t.me/ttswap01" target="_blank" rel="noopener noreferrer">Telegram</a></nav></footer>
         </div>
       </RainbowKitProvider>
     </Suspense>

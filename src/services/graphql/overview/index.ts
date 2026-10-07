@@ -119,17 +119,18 @@ export async function AggregateIndex(id: string, ssionChian: number): Promise<ob
             const tokendecimals1 = powerIterative(10, 6);
 
             goodsDatas.data.goodStates.forEach((en: any) => {
+                const previous = en.goodData?.[0] ?? en;
                 let map1 = {
                     id: "", name: "", decimals: 0, symbol: "", price: 0, logo_url: "",
                     address: "", isvaluegood: false, valueSymbol: "", h24: 0, trade24hValue: 0
                 };
-                let base_decimals = powerIterative(10, en.tokendecimals1);
+                let base_decimals = powerIterative(10, en.tokendecimals);
                 let current_price = ((en.currentValue / tokendecimals1) / (en.currentQuantity / base_decimals)) / goodValue;
-                let current_price24 = ((en.goodData[0].currentValue / tokendecimals1) / (en.goodData[0].currentQuantity / base_decimals)) / goodValue;
-                let t24 = (en.totalTradeQuantity - en.goodData[0].totalTradeQuantity) / base_decimals
+                let current_price24 = ((previous.currentValue / tokendecimals1) / (previous.currentQuantity / base_decimals)) / goodValue;
+                let t24 = (en.totalTradeQuantity - previous.totalTradeQuantity) / base_decimals
                 map1.id = en.id;
                 map1.name = en.tokenname;
-                map1.decimals = en.tokendecimals1;
+                map1.decimals = en.tokendecimals;
                 map1.symbol = en.tokensymbol;
                 map1.valueSymbol = goodsDatas.data.goodState.tokensymbol;
                 map1.logo_url = iconUrl(chainName, en.erc20Address);
@@ -142,6 +143,7 @@ export async function AggregateIndex(id: string, ssionChian: number): Promise<ob
             });
         }
     } catch (error) {
+        throw error;
     }
     item.hero = hero;
     item.chart = chart;

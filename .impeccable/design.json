@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T08:34:27.723421+00:00",
+  "title": "Design System: TTSwap",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Primary",
+        "tonalRamp": [
+          "oklch(15% 0.1049 165.61)",
+          "oklch(26% 0.1049 165.61)",
+          "oklch(37% 0.1049 165.61)",
+          "oklch(49% 0.1049 165.61)",
+          "oklch(60% 0.1049 165.61)",
+          "oklch(72% 0.1049 165.61)",
+          "oklch(84% 0.1049 165.61)",
+          "oklch(95% 0.1049 165.61)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Primary Hover",
+        "tonalRamp": [
+          "oklch(15% 0.0865 166.91)",
+          "oklch(26% 0.0865 166.91)",
+          "oklch(37% 0.0865 166.91)",
+          "oklch(49% 0.0865 166.91)",
+          "oklch(60% 0.0865 166.91)",
+          "oklch(72% 0.0865 166.91)",
+          "oklch(84% 0.0865 166.91)",
+          "oklch(95% 0.0865 166.91)"
+        ]
+      },
+      "primary-active": {
+        "role": "primary",
+        "displayName": "Primary Active",
+        "tonalRamp": [
+          "oklch(15% 0.0730 168.94)",
+          "oklch(26% 0.0730 168.94)",
+          "oklch(37% 0.0730 168.94)",
+          "oklch(49% 0.0730 168.94)",
+          "oklch(60% 0.0730 168.94)",
+          "oklch(72% 0.0730 168.94)",
+          "oklch(84% 0.0730 168.94)",
+          "oklch(95% 0.0730 168.94)"
+        ]
+      },
+      "primary-tint": {
+        "role": "primary",
+        "displayName": "Primary Tint",
+        "tonalRamp": [
+          "oklch(15% 0.0207 166.11)",
+          "oklch(26% 0.0207 166.11)",
+          "oklch(37% 0.0207 166.11)",
+          "oklch(49% 0.0207 166.11)",
+          "oklch(60% 0.0207 166.11)",
+          "oklch(72% 0.0207 166.11)",
+          "oklch(84% 0.0207 166.11)",
+          "oklch(95% 0.0207 166.11)"
+        ]
+      },
+      "selected-border": {
+        "role": "primary",
+        "displayName": "Selected Border",
+        "tonalRamp": [
+          "oklch(15% 0.0895 164.15)",
+          "oklch(26% 0.0895 164.15)",
+          "oklch(37% 0.0895 164.15)",
+          "oklch(49% 0.0895 164.15)",
+          "oklch(60% 0.0895 164.15)",
+          "oklch(72% 0.0895 164.15)",
+          "oklch(84% 0.0895 164.15)",
+          "oklch(95% 0.0895 164.15)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(37% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(60% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "tonalRamp": [
+          "oklch(15% 0.0041 121.56)",
+          "oklch(26% 0.0041 121.56)",
+          "oklch(37% 0.0041 121.56)",
+          "oklch(49% 0.0041 121.56)",
+          "oklch(60% 0.0041 121.56)",
+          "oklch(72% 0.0041 121.56)",
+          "oklch(84% 0.0041 121.56)",
+          "oklch(95% 0.0041 121.56)"
+        ]
+      },
+      "well": {
+        "role": "neutral",
+        "displayName": "Well",
+        "tonalRamp": [
+          "oklch(15% 0.0025 165.08)",
+          "oklch(26% 0.0025 165.08)",
+          "oklch(37% 0.0025 165.08)",
+          "oklch(49% 0.0025 165.08)",
+          "oklch(60% 0.0025 165.08)",
+          "oklch(72% 0.0025 165.08)",
+          "oklch(84% 0.0025 165.08)",
+          "oklch(95% 0.0025 165.08)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0078 17.71)",
+          "oklch(26% 0.0078 17.71)",
+          "oklch(37% 0.0078 17.71)",
+          "oklch(49% 0.0078 17.71)",
+          "oklch(60% 0.0078 17.71)",
+          "oklch(72% 0.0078 17.71)",
+          "oklch(84% 0.0078 17.71)",
+          "oklch(95% 0.0078 17.71)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0025 17.24)",
+          "oklch(26% 0.0025 17.24)",
+          "oklch(37% 0.0025 17.24)",
+          "oklch(49% 0.0025 17.24)",
+          "oklch(60% 0.0025 17.24)",
+          "oklch(72% 0.0025 17.24)",
+          "oklch(84% 0.0025 17.24)",
+          "oklch(95% 0.0025 17.24)"
+        ]
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Placeholder",
+        "tonalRamp": [
+          "oklch(15% 0.0138 285.94)",
+          "oklch(26% 0.0138 285.94)",
+          "oklch(37% 0.0138 285.94)",
+          "oklch(49% 0.0138 285.94)",
+          "oklch(60% 0.0138 285.94)",
+          "oklch(72% 0.0138 285.94)",
+          "oklch(84% 0.0138 285.94)",
+          "oklch(95% 0.0138 285.94)"
+        ]
+      },
+      "secondary-ink": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0119 285.81)",
+          "oklch(26% 0.0119 285.81)",
+          "oklch(37% 0.0119 285.81)",
+          "oklch(49% 0.0119 285.81)",
+          "oklch(60% 0.0119 285.81)",
+          "oklch(72% 0.0119 285.81)",
+          "oklch(84% 0.0119 285.81)",
+          "oklch(95% 0.0119 285.81)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "tonalRamp": [
+          "oklch(15% 0.0040 286.32)",
+          "oklch(26% 0.0040 286.32)",
+          "oklch(37% 0.0040 286.32)",
+          "oklch(49% 0.0040 286.32)",
+          "oklch(60% 0.0040 286.32)",
+          "oklch(72% 0.0040 286.32)",
+          "oklch(84% 0.0040 286.32)",
+          "oklch(95% 0.0040 286.32)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Danger",
+        "tonalRamp": [
+          "oklch(15% 0.1905 27.52)",
+          "oklch(26% 0.1905 27.52)",
+          "oklch(37% 0.1905 27.52)",
+          "oklch(49% 0.1905 27.52)",
+          "oklch(60% 0.1905 27.52)",
+          "oklch(72% 0.1905 27.52)",
+          "oklch(84% 0.1905 27.52)",
+          "oklch(95% 0.1905 27.52)"
+        ]
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "Warning",
+        "tonalRamp": [
+          "oklch(15% 0.1247 46.20)",
+          "oklch(26% 0.1247 46.20)",
+          "oklch(37% 0.1247 46.20)",
+          "oklch(49% 0.1247 46.20)",
+          "oklch(60% 0.1247 46.20)",
+          "oklch(72% 0.1247 46.20)",
+          "oklch(84% 0.1247 46.20)",
+          "oklch(95% 0.1247 46.20)"
+        ]
+      },
+      "warning-tint": {
+        "role": "semantic",
+        "displayName": "Warning Tint",
+        "tonalRamp": [
+          "oklch(15% 0.0214 95.28)",
+          "oklch(26% 0.0214 95.28)",
+          "oklch(37% 0.0214 95.28)",
+          "oklch(49% 0.0214 95.28)",
+          "oklch(60% 0.0214 95.28)",
+          "oklch(72% 0.0214 95.28)",
+          "oklch(84% 0.0214 95.28)",
+          "oklch(95% 0.0214 95.28)"
+        ]
+      },
+      "danger-tint": {
+        "role": "semantic",
+        "displayName": "Danger Tint",
+        "tonalRamp": [
+          "oklch(15% 0.0129 17.38)",
+          "oklch(26% 0.0129 17.38)",
+          "oklch(37% 0.0129 17.38)",
+          "oklch(49% 0.0129 17.38)",
+          "oklch(60% 0.0129 17.38)",
+          "oklch(72% 0.0129 17.38)",
+          "oklch(84% 0.0129 17.38)",
+          "oklch(95% 0.0129 17.38)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home headline."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page headings; mobile override at 28px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section and panel headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Operating copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Action labels."
+      },
+      "metric": {
+        "displayName": "Metric",
+        "purpose": "Prominent comparable values; tabular figures."
+      }
+    },
+    "shadows": [
+      {
+        "name": "trade-dialog",
+        "value": "0 16px 48px rgb(34 29 29 / .12)",
+        "purpose": "Floating trade dialog only."
+      },
+      {
+        "name": "app-modal",
+        "value": "0 16px 48px #221d1d20",
+        "purpose": "Ant Design modal shell."
+      },
+      {
+        "name": "active-nav",
+        "value": "inset 0 -2px #047857",
+        "purpose": "Active navigation/tab marker, not elevation."
+      }
+    ],
+    "focus": [
+      {
+        "name": "keyboard-outline",
+        "value": "2px solid #047857; outline-offset: 3px",
+        "purpose": "Visible keyboard focus in app, modal and trading scopes."
+      }
+    ],
+    "motion": [
+      {
+        "name": "app-button-color",
+        "value": "background-color .15s, color .15s",
+        "purpose": "Primary and secondary app controls; default CSS ease."
+      },
+      {
+        "name": "trade-waiting",
+        "value": "trade-spin 1s linear infinite",
+        "purpose": "Waiting spinner only; disabled for reduced motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none !important; transition: none !important; scroll-behavior: auto !important",
+        "purpose": "App reduced-motion override; trade scopes also suppress spinner and dialog animation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "360px"
+      },
+      {
+        "name": "mobile",
+        "value": "768px"
+      },
+      {
+        "name": "collapsed-navigation",
+        "value": "1024px"
+      },
+      {
+        "name": "desktop",
+        "value": "1280px"
+      }
+    ],
+    "snippetNotes": "Literal values are resolved from scoped app/trade tokens. Ramps are derived panel metadata, not additional application colors. Samples demonstrate actual visual patterns; amounts use unavailable placeholders."
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Canonical app action with hover, focus and disabled states.",
+      "html": "<button class=\"ds-primary\">Connect wallet</button>",
+      "css": ".ds-primary{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:12px;font-size:14px;font-weight:500;line-height:1.4;cursor:pointer;transition:background-color .15s,color .15s;background:#047857;color:#fff;border:1px solid transparent}.ds-primary:hover{background:#065f46}.ds-primary:focus-visible{outline:2px solid #047857;outline-offset:3px;}.ds-primary:disabled{background:#e4e4e7;color:#71717a;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Neutral action; selected filters use a mint tint.",
+      "html": "<button class=\"ds-secondary\">Retry</button><button class=\"ds-secondary ds-selected\" aria-pressed=\"true\">Selected</button>",
+      "css": ".ds-secondary{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:12px;font-size:14px;font-weight:500;line-height:1.4;cursor:pointer;transition:background-color .15s,color .15s;background:#fff;color:#3f3f46;border:1px solid #e4e4e7}.ds-secondary:hover{background:#f6f7f4}.ds-secondary.ds-selected{background:#ecfdf5;color:#047857;border-color:#a7f3d0}.ds-secondary:focus-visible{outline:2px solid #047857;outline-offset:3px;}.ds-secondary:disabled{background:#e4e4e7;color:#71717a;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Trade submit",
+      "kind": "button",
+      "refersTo": "trade-submit",
+      "description": "Trading action has a distinct active shade and 48px target.",
+      "html": "<button class=\"ds-submit\">Review exchange</button>",
+      "css": ".ds-submit{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;background:#047857;color:white;min-height:48px;border:0;border-radius:12px;font-weight:500;font-size:16px;width:100%;cursor:pointer}.ds-submit:hover{background:#065f46}.ds-submit:active{background:#064e3b}.ds-submit:focus-visible{outline:2px solid #047857;outline-offset:3px;}.ds-submit:disabled{background:#e4e4e7;color:#636161;cursor:not-allowed}"
+    },
+    {
+      "name": "Search input",
+      "kind": "input",
+      "refersTo": "search-input",
+      "description": "Market search with the canonical rounded field and focus outline.",
+      "html": "<input class=\"ds-search\" aria-label=\"Search tokens\" placeholder=\"Search tokens\" />",
+      "css": ".ds-search{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;width:100%;min-height:48px;padding:12px 16px;border:1px solid #e4e4e7;border-radius:12px;background:#fff;font-size:15px;color:#221d1d;caret-color:#047857}.ds-search::placeholder{color:#71717a}.ds-search:focus-visible{outline:2px solid #047857;outline-offset:3px;}"
+    },
+    {
+      "name": "Data panel",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat portfolio surface with comparable metrics.",
+      "html": "<section class=\"ds-card\"><h2 class=\"ds-card-title\">Portfolio</h2><dl class=\"ds-card-metric\"><dt>Total value</dt><dd>—</dd></dl></section>",
+      "css": ".ds-card{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;background:#fff;color:#221d1d;border:1px solid #e4e4e7;border-radius:20px;padding:24px}.ds-card-title{font-size:20px;font-weight:500;line-height:1.3;letter-spacing:-.025em;margin:0 0 24px}.ds-card-metric{margin:0}.ds-card-metric dt{font-size:13px;color:#636161;margin-bottom:12px}.ds-card-metric dd{margin:0;font-size:32px;line-height:1.3;font-variant-numeric:tabular-nums}@media(max-width:767px){.ds-card{padding:16px}.ds-card-metric dd{font-size:24px}}"
+    },
+    {
+      "name": "Count badge",
+      "kind": "chip",
+      "refersTo": "count-chip",
+      "description": "Compact selected-color count used beside account tabs.",
+      "html": "<span class=\"ds-count\">3</span>",
+      "css": ".ds-count{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;background:#ecfdf5;color:#047857;font-size:12px;border-radius:8px;padding:2px 6px}"
+    },
+    {
+      "name": "Mobile navigation",
+      "kind": "nav",
+      "refersTo": "nav-mobile-active",
+      "description": "Vertical mobile links show selection without wrapping desktop navigation.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-link ds-current\" href=\"#markets\" aria-current=\"page\">Markets</a><a class=\"ds-nav-link\" href=\"#trade\">Trade</a></nav>",
+      "css": ".ds-nav{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;display:flex;flex-direction:column;padding:8px 16px 16px;border-top:1px solid #e4e4e7;background:#fff}.ds-nav-link{padding:12px 16px;min-height:44px;border-radius:8px;color:#52525b;text-decoration:none;font-size:14px}.ds-nav-link:hover{color:#047857}.ds-nav-link.ds-current{background:#ecfdf5;color:#047857}.ds-nav-link:focus-visible{outline:2px solid #047857;outline-offset:3px;}"
+    },
+    {
+      "name": "Trade amount field",
+      "kind": "custom",
+      "refersTo": "trade-asset-field",
+      "description": "Large tabular amount in a neutral well with an asset selector.",
+      "html": "<div class=\"ds-amount\"><label class=\"ds-amount-label\" for=\"ds-amount-input\">You pay</label><div class=\"ds-amount-row\"><input id=\"ds-amount-input\" class=\"ds-amount-input\" inputmode=\"decimal\" placeholder=\"0\" /><button class=\"ds-asset\">ETH <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/></svg></button></div></div>",
+      "css": ".ds-amount{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;background:#f3f5f4;border-radius:12px;padding:16px}.ds-amount-label{display:block;color:#636161;font-size:14px;line-height:20px;margin-bottom:12px}.ds-amount-row{display:flex;align-items:center;gap:12px}.ds-amount-input{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;flex:1;width:0;min-width:0;background:transparent;border:0;color:#221d1d;font-size:32px;line-height:40px;font-weight:500;padding:4px 0;border-radius:8px;caret-color:#047857;font-variant-numeric:tabular-nums}.ds-amount-input::placeholder{color:#636161;opacity:1}.ds-asset{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:4px 8px;background:#fff;border:0;border-radius:12px;font-weight:500;cursor:pointer}.ds-amount-input:focus-visible,.ds-asset:focus-visible{outline:2px solid #047857;outline-offset:3px;}@media(max-width:767px){.ds-amount-row{flex-direction:column-reverse;align-items:stretch}.ds-amount-input{width:100%;font-size:28px;line-height:36px}.ds-asset{width:fit-content}}"
+    },
+    {
+      "name": "Recovery panel",
+      "kind": "card",
+      "refersTo": "page-state",
+      "description": "Shared error state with a real retry action pattern.",
+      "html": "<div class=\"ds-state\" role=\"alert\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4m0 4h.01\"/></svg><h2 class=\"ds-state-title\">Unable to load data</h2><p class=\"ds-state-copy\">Please try again.</p><button class=\"ds-state-retry\">Retry</button></div>",
+      "css": ".ds-state{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;text-align:center;padding:48px 24px;background:#fff;border:1px solid #e4e4e7;border-radius:20px;color:#636161;display:flex;flex-direction:column;align-items:center;gap:12px}.ds-state-title{margin:0;color:#221d1d;font-size:20px;font-weight:500;line-height:1.3;letter-spacing:-.025em}.ds-state-copy{margin:0;max-width:52ch}.ds-state-retry{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:12px;font-size:14px;font-weight:500;line-height:1.4;cursor:pointer;transition:background-color .15s,color .15s;margin-top:8px;background:#fff;color:#3f3f46;border:1px solid #e4e4e7}.ds-state-retry:hover{background:#f6f7f4}.ds-state-retry:focus-visible{outline:2px solid #047857;outline-offset:3px;}@media(prefers-reduced-motion:reduce){.ds-state-retry{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Mint Ledger",
+    "overview": "TTSwap uses its incumbent mint identity, logo and token imagery on a quiet light canvas. Dark mint carries readable actions and selected states; white panels and restrained borders organize trading and account information. The original ledger metaphor remains: confidence comes from clear hierarchy and comparable numbers.\n\nThis document records the implemented system in app.css, trade.css and the incumbent global styles. It merges the earlier direction with actual controls, typography and responsive behavior. Existing Chinese/English copy and product workflows remain the context for the visual system.",
+    "keyCharacteristics": [
+      "One mint family for actions and selection.",
+      "System sans typography with tabular figures for comparison.",
+      "12px controls and 20px data panels.",
+      "Flat data surfaces; depth reserved for dialogs.",
+      "Explicit loading, unavailable, disconnected and transaction states."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Keep action and selected-state colors within the incumbent mint family; semantic warning and error colors communicate state.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Ledger Rule",
+        "body": "Use tabular figures for values people compare; use the system mono stack where the existing numeric and address roles call for it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Data panels and buttons stay flat at rest and on hover; only floating dialogs receive the established shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the TTSwap logo, mint identity and existing token imagery.",
+      "Do use deep mint for filled actions and the darker mint hover state.",
+      "Do use 12px controls and 20px panels, with visible keyboard focus.",
+      "Do keep comparable numbers tabular and long addresses wrap-safe.",
+      "Do retain Chinese/English layout flexibility and stack result-first workflows on mobile.",
+      "Do distinguish unavailable data from true zero and broadcast transactions from confirmed results."
+    ],
+    "donts": [
+      "Don't introduce a second decorative accent or borrowed brand assets.",
+      "Don't document Geist as loaded or replace the implemented system font stack without an explicit change.",
+      "Don't add hover lift, glow or rest shadows to data cards.",
+      "Don't turn controls into pills or invent dark marketing bands as current system patterns.",
+      "Don't substitute fabricated chart lines, metrics or success states for unavailable data."
+    ]
+  }
+}

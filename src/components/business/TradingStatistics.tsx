@@ -16,98 +16,109 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { useState, useEffect } from "react";
-// import { useValueGood } from "@/stores/valueGood";
-// import { useLocalStorage } from "@/utils/LocalStorageManager";
-
-// 使用新的常量
+import { useState, useEffect, type ReactNode } from "react";
 import { COLORS } from "@/utils/constants";
-// import { ecosystemChartDatas } from '@/services/graphql/overview';
-import { prettifyCurrencys } from '@/services/graphql/util';
+import { prettifyCurrencys } from "@/services/graphql/util";
 import { timestampParser } from "@/utils/timestamp-parser";
-import {
-  type UniswapLikeEcosystemCharts,
-} from "@/types/XykServiceTypes";
-import { useTranslation } from 'react-i18next';
+import { type UniswapLikeEcosystemCharts } from "@/types/XykServiceTypes";
+import { useTranslation } from "react-i18next";
 
-// interface TradingStatisticsProps { }
+type Period = "7d" | "30d";
 
-export function TradingStatistics(data: any) {
+function PeriodToggle({
+  value,
+  onChange,
+  label,
+}: {
+  value: Period;
+  onChange: (p: Period) => void;
+  label: string;
+}) {
   const { t } = useTranslation();
-  // const { info } = useValueGood();
-  // const { ssionChian } = useLocalStorage();
-  const [volumePeriod, setVolumePeriod] = useState<
-    "7d" | "30d"
-  >("7d");
-  const [liquidityPeriod, setLiquidityPeriod] = useState<
-    "7d" | "30d"
-  >("7d");
+  return (
+    <div
+      className="flex gap-1 self-start sm:self-auto"
+      role="group"
+      aria-label={label}
+    >
+      {(["7d", "30d"] as const).map((p) => {
+        const active = value === p;
+        return (
+          <Button
+            key={p}
+            type="button"
+            variant={active ? "default" : "outline"}
+            size="sm"
+            aria-pressed={active}
+            className={`h-8 min-h-8 px-3 text-xs rounded-lg ${
+              active
+                ? "bg-[#0fb981] hover:bg-[#0d9a6e] text-white border-0"
+                : "bg-white text-zinc-700 hover:bg-zinc-50 hover:border-[#0fb981] hover:text-[#0d9a6e]"
+            }`}
+            onClick={() => onChange(p)}
+          >
+            {p === "7d" ? `7 ${t("home.chart.day")}` : `30 ${t("home.chart.day")}`}
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
+
+export function TradingStatistics({
+  data,
+  loading = false,
+}: {
+  data?: UniswapLikeEcosystemCharts;
+  loading?: boolean;
+}) {
+  const { t } = useTranslation();
+  const [volumePeriod, setVolumePeriod] = useState<Period>("7d");
+  const [liquidityPeriod, setLiquidityPeriod] = useState<Period>("7d");
   const [liquidityData, setLiquidityData] = useState<
     { date: string; liquidity: any }[]
   >([]);
   const [volumeData, setVolumeData] = useState<
     { date: string; volume: any }[]
   >([]);
-  const [Data, setData] = useState<UniswapLikeEcosystemCharts>(null);
+  const [chartData, setChartData] = useState<UniswapLikeEcosystemCharts | null>(
+    null
+  );
 
   useEffect(() => {
-    setData(data.data);
-    // (async () => {
-    //   try {
-    //     const data: any = await ecosystemChartDatas(info.id, ssionChian);
-    //     setData(data);
-    //     console.log(data);
-    //   } catch (error) {
-    //     setData(null);
-    //   }
-    // })();
+    setChartData(data ?? null);
   }, [data]);
 
   useEffect(() => {
-    if (volumePeriod == "7d") {
-      setVolumeData(
-        Data?.volume_chart_7d.map((item:any) => ({
-          date: timestampParser(item.dt, "DD MMM YY"),
-          volume: item.volume,
-          // volume: prettifyCurrencys(item.volume_quote),
-        }))
-      );
-    } else {
-      setVolumeData(
-        Data?.volume_chart_30d.map((item:any) => ({
-          date: timestampParser(item.dt, "DD MMM YY"),
-          volume: item.volume,
-          // volume: prettifyCurrencys(item.volume_quote),
-        }))
-      );
-    }
-    if (liquidityPeriod == "7d") {
-      setLiquidityData(
-        Data?.liquidity_chart_7d.map((item:any) => ({
-          date: timestampParser(item.dt, "DD MMM YY"),
-          liquidity: item.volume,
-          // liquidity: prettifyCurrencys(item.liquidity_quote),
-        }))
-      );
-    } else {
-      setLiquidityData(
-        Data?.liquidity_chart_30d.map((item:any) => ({
-          date: timestampParser(item.dt, "DD MMM YY"),
-          liquidity: item.volume,
-          // liquidity: prettifyCurrencys(item.liquidity_quote),
-        }))
-      )
-    }
-    // console.log("----",Data,liquidityData,volumeData);
-  }, [Data, volumePeriod, liquidityPeriod]);
+    const volumeSrc =
+      volumePeriod === "7d"
+        ? chartData?.volume_chart_7d
+        : chartData?.volume_chart_30d;
+    setVolumeData(
+      volumeSrc?.map((item: any) => ({
+        date: timestampParser(item.dt, "DD MMM YY"),
+        volume: item.volume,
+      })) ?? []
+    );
 
-  // 自定义工具提示
+    const liqSrc =
+      liquidityPeriod === "7d"
+        ? chartData?.liquidity_chart_7d
+        : chartData?.liquidity_chart_30d;
+    setLiquidityData(
+      liqSrc?.map((item: any) => ({
+        date: timestampParser(item.dt, "DD MMM YY"),
+        liquidity: item.volume,
+      })) ?? []
+    );
+  }, [chartData, volumePeriod, liquidityPeriod]);
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900">{label}</p>
-          <p className="text-sm text-gray-600">
+        <div className="bg-white p-3 border border-zinc-200 rounded-xl shadow-sm">
+          <p className="font-medium text-zinc-900 tabular-nums">{label}</p>
+          <p className="text-sm text-zinc-600 tabular-nums">
             {payload[0].dataKey === "volume"
               ? t("home.chart.volume")
               : t("home.chart.liquidity")}
@@ -119,222 +130,151 @@ export function TradingStatistics(data: any) {
     return null;
   };
 
+  const axisTick = { fontSize: 10, fill: "#52525b" };
+
+  const chartShell = (empty: boolean, children: ReactNode) => (
+    <div className="h-48 sm:h-64">
+      {loading || empty ? (
+        <div className="h-full flex items-center justify-center text-sm text-zinc-600">
+          {loading ? t("home.loading") : t("home.chart.empty")}
+        </div>
+      ) : (
+        children
+      )}
+    </div>
+  );
+
   return (
-    <div className="space-y-4 sm:space-y-6 animate-fade-in">
-      {/* 图表区域 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        {/* 总交易量图表 */}
-        <Card className="stagger-item hover-lift transition-all duration-300">
-          <CardHeader className="pb-3 sm:pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl transition-colors duration-200 hover:text-[#0fb981]">
-                {t("home.chart.volume.title")}
-                <span className="text-sm font-normal text-muted-foreground">
-                  (USDT)
-                </span>
-              </CardTitle>
-              <div className="flex gap-1 self-start sm:self-auto">
-                <Button
-                  variant={
-                    volumePeriod === "7d"
-                      ? "default"
-                      : "outline"
-                  }
-                  size="sm"
-                  className={`h-7 px-2 sm:px-3 text-xs transition-all duration-200 hover:scale-105 ${volumePeriod === "7d"
-                    ? "bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 hover-glow"
-                    : "bg-white hover:bg-gray-50 hover:border-[#0fb981] hover:text-[#0fb981]"
-                    }`}
-                  onClick={() => setVolumePeriod("7d")}
-                >
-                  7 {t("home.chart.day")}
-                </Button>
-                <Button
-                  variant={
-                    volumePeriod === "30d"
-                      ? "default"
-                      : "outline"
-                  }
-                  size="sm"
-                  className={`h-7 px-2 sm:px-3 text-xs transition-all duration-200 hover:scale-105 ${volumePeriod === "30d"
-                    ? "bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 hover-glow"
-                    : "bg-white hover:bg-gray-50 hover:border-[#0fb981] hover:text-[#0fb981]"
-                    }`}
-                  onClick={() => setVolumePeriod("30d")}
-                >
-                  30 {t("home.chart.day")}
-                </Button>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 rounded-full bg-[#0fb981] transition-transform duration-200 hover:scale-110"></div>
-              <span className="text-muted-foreground transition-colors duration-200 hover:text-gray-600">
-                Volume (USDT)
-              </span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="h-48 sm:h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={volumeData}
-                  margin={{
-                    top: 20,
-                    right: 15,
-                    left: 10,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#f0f0f0"
-                  />
-                  <XAxis
-                    dataKey="date"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 10, fill: "#9ca3af" }}
-                  // interval={0}
-                  // angle={-45}
-                  // textAnchor="end"
-                  // height={60}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 10, fill: "#9ca3af" }}
-                    width={35}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Bar
-                    dataKey="volume"
-                    fill={COLORS.PRIMARY}
-                    radius={[4, 4, 0, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+      <Card className="rounded-2xl border-zinc-200 shadow-none">
+        <CardHeader className="pb-3 sm:pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <CardTitle className="flex items-center gap-2 text-lg text-zinc-900">
+              {t("home.chart.volume.title")}
+              <span className="text-sm font-normal text-zinc-600">(USDT)</span>
+            </CardTitle>
+            <PeriodToggle
+              value={volumePeriod}
+              onChange={setVolumePeriod}
+              label={t("home.chart.volume.title")}
+            />
+          </div>
+          <div className="flex items-center gap-2 text-sm text-zinc-600">
+            <span
+              className="w-2.5 h-2.5 rounded-full bg-[#0fb981]"
+              aria-hidden="true"
+            />
+            Volume (USDT)
+          </div>
+        </CardHeader>
+        <CardContent>
+          {chartShell(
+            !volumeData.length,
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={volumeData}
+                margin={{ top: 20, right: 15, left: 10, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={axisTick}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={axisTick}
+                  width={35}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar
+                  dataKey="volume"
+                  fill={COLORS.PRIMARY}
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </CardContent>
+      </Card>
 
-        {/* 总投资量图表 */}
-        <Card className="stagger-item hover-lift transition-all duration-300">
-          <CardHeader className="pb-3 sm:pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl transition-colors duration-200 hover:text-[#0fb981]">
-                {t("home.chart.liquidity.title")}
-                <span className="text-sm font-normal text-muted-foreground">
-                  (USDT)
-                </span>
-              </CardTitle>
-              <div className="flex gap-1 self-start sm:self-auto">
-                <Button
-                  variant={
-                    liquidityPeriod === "7d"
-                      ? "default"
-                      : "outline"
-                  }
-                  size="sm"
-                  className={`h-7 px-2 sm:px-3 text-xs transition-all duration-200 hover:scale-105 ${liquidityPeriod === "7d"
-                    ? "bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 hover-glow"
-                    : "bg-white hover:bg-gray-50 hover:border-[#0fb981] hover:text-[#0fb981]"
-                    }`}
-                  onClick={() => setLiquidityPeriod("7d")}
-                >
-                  7 {t("home.chart.day")}
-                </Button>
-                <Button
-                  variant={
-                    liquidityPeriod === "30d"
-                      ? "default"
-                      : "outline"
-                  }
-                  size="sm"
-                  className={`h-7 px-2 sm:px-3 text-xs transition-all duration-200 hover:scale-105 ${liquidityPeriod === "30d"
-                    ? "bg-[#0fb981] hover:bg-[#22c55e] text-white border-0 hover-glow"
-                    : "bg-white hover:bg-gray-50 hover:border-[#0fb981] hover:text-[#0fb981]"
-                    }`}
-                  onClick={() => setLiquidityPeriod("30d")}
-                >
-                  30 {t("home.chart.day")}
-                </Button>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 rounded-full bg-[#0fb981] transition-transform duration-200 hover:scale-110"></div>
-              <span className="text-muted-foreground transition-colors duration-200 hover:text-gray-600">
-                Liquidity (USDT)
-              </span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="h-48 sm:h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={liquidityData}
-                  margin={{
-                    top: 20,
-                    right: 15,
-                    left: 10,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#f0f0f0"
-                  />
-                  <XAxis
-                    dataKey="date"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 10, fill: "#9ca3af" }}
-                  // interval={0}
-                  // angle={-45}
-                  // textAnchor="end"
-                  // height={60}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 10, fill: "#9ca3af" }}
-                    width={35}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <defs>
-                    <linearGradient
-                      id="liquidityGradient"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop
-                        offset="5%"
-                        stopColor={COLORS.PRIMARY}
-                        stopOpacity={0.3}
-                      />
-                      <stop
-                        offset="95%"
-                        stopColor={COLORS.PRIMARY}
-                        stopOpacity={0.05}
-                      />
-                    </linearGradient>
-                  </defs>
-                  <Area
-                    type="monotone"
-                    dataKey="liquidity"
-                    stroke={COLORS.PRIMARY}
-                    strokeWidth={2}
-                    fill="url(#liquidityGradient)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-
+      <Card className="rounded-2xl border-zinc-200 shadow-none">
+        <CardHeader className="pb-3 sm:pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <CardTitle className="flex items-center gap-2 text-lg text-zinc-900">
+              {t("home.chart.liquidity.title")}
+              <span className="text-sm font-normal text-zinc-600">(USDT)</span>
+            </CardTitle>
+            <PeriodToggle
+              value={liquidityPeriod}
+              onChange={setLiquidityPeriod}
+              label={t("home.chart.liquidity.title")}
+            />
+          </div>
+          <div className="flex items-center gap-2 text-sm text-zinc-600">
+            <span
+              className="w-2.5 h-2.5 rounded-full bg-[#0fb981]"
+              aria-hidden="true"
+            />
+            Liquidity (USDT)
+          </div>
+        </CardHeader>
+        <CardContent>
+          {chartShell(
+            !liquidityData.length,
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={liquidityData}
+                margin={{ top: 20, right: 15, left: 10, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={axisTick}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={axisTick}
+                  width={35}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <defs>
+                  <linearGradient
+                    id="liquidityGradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop
+                      offset="5%"
+                      stopColor={COLORS.PRIMARY}
+                      stopOpacity={0.3}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor={COLORS.PRIMARY}
+                      stopOpacity={0.05}
+                    />
+                  </linearGradient>
+                </defs>
+                <Area
+                  type="monotone"
+                  dataKey="liquidity"
+                  stroke={COLORS.PRIMARY}
+                  strokeWidth={2}
+                  fill="url(#liquidityGradient)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

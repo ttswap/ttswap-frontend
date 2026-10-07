@@ -1,3 +1,4 @@
+import { PageState } from "@/components/common/PageState";
 import { useEffect, useRef, useState } from "react";
 import {
   Table,
@@ -63,6 +64,7 @@ export function ReferralTable({ wallet_address }: ReferralTableProps) {
   const { ssionChian } = useLocalStorage();
   const [totalValue, setTotalValue] = useState(0);
   const page_size = 20;
+  const [retryVersion,setRetryVersion] = useState(0);
 
   const handlePagination = (page_number: number) => {
     setPagination((prev) => {
@@ -81,49 +83,19 @@ export function ReferralTable({ wallet_address }: ReferralTableProps) {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [hasMore, pagination]);
 
+
+  useEffect(() => {setPagination({page_number:1});setResult([]);setHasMore(false);setError({error:false,error_message:""});},[ssionChian, info.id, wallet_address]);
   useEffect(() => {
-    (async () => {
-      settableSpinning(true);
-      // setResult(None);
-      let response: any;
-      try {
-        response =
-          await myRefereesDatas({
-            id: info.id,
-            pageNumber: pagination.page_number - 1,
-            // @ts-ignore
-            pageSize: page_size,
-            address: wallet_address,
-          }, ssionChian);
-        console.log("myCommissions", response)
-        setTotalValue(response.totalValue);
-        setHasMore(response.pagination.has_more);
-        setError({ error: false, error_message: "" });
-        if (pagination.page_number === 1) {
-          setResult(response.items || []);
-        } else {
-          setResult(prevItems => [...(prevItems || []), ...(response.items || [])]);
-        }
-        setCollectIds(response.ids);
-      } catch (exception) {
-        setResult([]);
-        setError({
-          error: response ? response.error : false,
-          error_message: response ? response.error_message : "",
-        });
-      }
-      settableSpinning(false);
-    })();
-  }, [pagination, info.id, wallet_address, ssionChian]);
+    let active=true;
+    if (!info.id || !wallet_address) { settableSpinning(true); return; }
+    settableSpinning(true);setError({error:false,error_message:""});
+    (async()=>{try{const response:any=await myRefereesDatas({id: info.id, address: wallet_address,pageNumber:pagination.page_number-1,pageSize:page_size},ssionChian);if(!active)return;
+      setHasMore(response.pagination.has_more);setTotalValue(response.totalValue);setCollectIds(response.ids);
+      setResult(prev=>pagination.page_number===1 ? response.items || [] : [...(prev || []),...(response.items || [])]);
+    }catch{if(active)setError({error:true,error_message:""});}finally{if(active)settableSpinning(false);}})();
+    return()=>{active=false;};
+  },[ssionChian, info.id, wallet_address,pagination.page_number,retryVersion]);
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -140,6 +112,8 @@ export function ReferralTable({ wallet_address }: ReferralTableProps) {
   }, []);
 
 
+  if (error.error) return <PageState kind="error" onRetry={()=>setRetryVersion(v=>v+1)}/>;
+  if (tableSpinning && !maybeResult?.length) return <PageState kind="loading"/>;
   if (maybeResult?.length === 0) {
     return (
       <div className="text-center py-16 animate-fade-in">
@@ -388,6 +362,7 @@ export function ReferralTable({ wallet_address }: ReferralTableProps) {
           </div>
         </div>
       </div>
+      {hasMore && <div className="app-load-more"><button className="app-secondary" disabled={tableSpinning} onClick={()=>setPagination(p=>({page_number:p.page_number+1}))}>{t("appUx.loadMore")}</button></div>}
     </div>
   );
 }
